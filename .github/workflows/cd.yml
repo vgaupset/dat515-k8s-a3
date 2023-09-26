@@ -7,6 +7,11 @@ on:
       - game-2048-example/**
       - .github/workflows/cd.yml
 
+permissions:
+  packages: write
+  deployments: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
