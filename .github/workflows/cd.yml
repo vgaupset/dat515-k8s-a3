@@ -1,0 +1,13 @@
+on:
+  push:
+    branches: [main]
+    paths: [game-2048]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+          docker build -t ghcr.io/${{ github.repository }}/game-2048:latest ./game-2048-example
