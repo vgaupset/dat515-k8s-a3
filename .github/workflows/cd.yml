@@ -1,7 +1,11 @@
+name: cd
+  
 on:
   push:
     branches: [main]
-    paths: [game-2048]
+    paths: 
+      - game-2048-example/**
+      - .github/workflows/cd.yml
 
 jobs:
   deploy:
