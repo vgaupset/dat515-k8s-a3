@@ -7,5 +7,7 @@ spec:
     - name: http
       port: 8080
       targetPort: 8080
+      nodePort: 30081
   selector:
     app: game-2048
+  type: NodePort

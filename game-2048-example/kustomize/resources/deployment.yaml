@@ -18,7 +18,7 @@ spec:
       containers:
         - name: backend
           # Replace the `<>` placeholders with your docker registry info
-          image: ghcr.io/vgaupset/dat515-k8s-a3/2048-game:latest
+          image: ghcr.io/vgaupset/dat515-k8s-a3/game-2048:latest
           ports:
             - name: http
               containerPort: 8080
