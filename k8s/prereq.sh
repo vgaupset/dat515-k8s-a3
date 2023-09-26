@@ -1,3 +1,4 @@
+#! /bin/bash
 sudo apt update -y
 sudo apt upgrade -y
 
@@ -34,14 +35,14 @@ sudo sed -i.bak -r 's/(.+ swap .+)/#\1/' /etc/fstab
 sudo tee /etc/modules-load.d/k8s.conf <<EOF
 overlay
 br_netfilter
-EOF 
+EOF
 
 
 sudo modprobe overlay 
 
 sudo modprobe br_netfilter 
 
-sudo tee /etc/sysctl.d/kubernetes.conf<<EOF
+sudo tee /etc/sysctl.d/kubernetes.conf <<EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
@@ -65,15 +66,42 @@ sudo systemctl restart containerd
 
 sudo systemctl enable containerd
 
-systemctl status containerd
-
 # Initilize control plane
 
 sudo systemctl enable kubelet
 
 sudo kubeadm config images pull --cri-socket /run/containerd/containerd.sock
 
+
+
+
+wget https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+wget https://raw.githubusercontent.com/vgaupset/dat515-k8s-a3/main/game-2048-example/kustomize/kustomization.yaml
+wget https://raw.githubusercontent.com/vgaupset/dat515-k8s-a3/main/game-2048-example/kustomize/resources/service.yaml 
+wget https://raw.githubusercontent.com/vgaupset/dat515-k8s-a3/main/game-2048-example/kustomize/resources/deployment.yaml 
+wget https://raw.githubusercontent.com/vgaupset/dat515-k8s-a3/main/game-2048-example/kustomize/resources/namespace.yaml
+
+mkdir /home/ubuntu/resources
+
+mv kube-flannel.yml /home/ubuntu
+mv kustomization.yaml /home/ubuntu
+mv service.yaml /home/ubuntu/resources
+mv deployment.yaml /home/ubuntu/resources
+mv namespace.yaml /home/ubuntu/resources
+
 sudo kubeadm init   --pod-network-cidr=10.244.0.0/16   --cri-socket /run/containerd/containerd.sock
+
+mkdir -p /home/ubuntu/.kube
+sudo cp -i /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
+sudo chown 1000:1000 /home/ubuntu/.kube/config
+
+
+
+
+
+
+
 
 
 # mkdir -p $HOME/.kube
